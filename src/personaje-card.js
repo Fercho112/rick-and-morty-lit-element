@@ -110,7 +110,8 @@ class PersonajeCard extends LitElement {
     }
 
 
-    handleFav() {
+    handleFav(e) {
+        e.stopPropagation()
         this.dispatchEvent(new CustomEvent("toggle-fav", {
             detail: {
                 personaje: {

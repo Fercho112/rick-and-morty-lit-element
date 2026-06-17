@@ -4,6 +4,7 @@ import "./personaje-list.js"
 import "./favoritos-list.js"
 import "./footer-app.js"
 import "./loading-spinner.js"
+import "./personaje-modal.js"
 
 class RickApp extends LitElement {
     static get properties() {
@@ -13,7 +14,8 @@ class RickApp extends LitElement {
             info: { state: true },
             cargando: { state: true },
             favoritos: { state: true },
-            vista: { state: true }
+            vista: { state: true },
+            personajeSeleccionado: { state: true }
         }
     }
 
@@ -25,6 +27,7 @@ class RickApp extends LitElement {
         this.cargando = false
         this.favoritos = []
         this.vista = "personajes"
+        this.personajeSeleccionado = null
     }
 
     static get is() {
@@ -84,9 +87,18 @@ class RickApp extends LitElement {
         this.vista = this.vista === "favoritos" ? "personajes" : "favoritos"
     }
 
+    handleAbrirModal(event) {
+        this.personajeSeleccionado = event.detail.personaje
+    }
+
+    handleCerrarModal() {
+        this.personajeSeleccionado = null
+    }
+
     render() {
         return html`
             ${this.cargando ? html`<loading-spinner></loading-spinner>` : ""}
+            ${this.personajeSeleccionado ? html`<personaje-modal .personaje=${this.personajeSeleccionado} @cerrar-modal=${this.handleCerrarModal}></personaje-modal>` : ""}
             
             <header-app ?hiddenSearch=${this.vista === "favoritos"} @filter-input=${this.handleFiltro}
                 @ver-favs=${this.handleVerFavs}>
@@ -98,7 +110,7 @@ class RickApp extends LitElement {
             : html`
             <personaje-list filtro=${this.filtro} pagina=${this.pagina} .favoritos=${this.favoritos}
                 @info-updated=${this.handleInfo} @toggle-fav=${this.handleToggleFav} @cargando-start=${this.handleCargandoStart}
-                @cargando-end=${this.handleCargandoEnd}>
+                @cargando-end=${this.handleCargandoEnd} @abrir-modal=${this.handleAbrirModal}>
             </personaje-list>
             <footer-app .info=${this.info} paginaActual=${this.pagina} @siguiente=${this.handleSiguiente}
                 @anterior=${this.handleAnterior}>
