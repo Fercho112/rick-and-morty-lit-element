@@ -57,7 +57,7 @@ class PersonajeList extends LitElement {
 
         if (changedProperties.has("filtro")) {
             clearTimeout(this.debounceTimer)
-            this.debounceTimer = setTimeout(() => this.getCharacters(), 700)
+            this.debounceTimer = setTimeout(() => this.getCharacters(), 900)
         } else if (changedProperties.has("pagina")) {
             clearTimeout(this.debounceTimer)
             this.getCharacters()
@@ -102,7 +102,7 @@ class PersonajeList extends LitElement {
         <div class="grid-container">
             ${this.personajes.map(p => html`
             <personaje-card nombre=${p.name} status=${p.status} species=${p.species} imagen=${p.image} personajeId=${p.id}
-                ?isFav=${this.favoritos.some(f=> f.id === p.id)}>
+                ?isFav=${this.favoritos.some(f => f.id === p.id)}>
             </personaje-card>
             `)}
         </div>
